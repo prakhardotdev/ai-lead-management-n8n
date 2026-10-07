@@ -1,75 +1,42 @@
-# Never Lose a Lead Again
-### An AI lead-management system that captures, qualifies, and follows up on every lead, automatically.
+# Every lead answered in 1 minute. Automatically.
+
+An AI system that catches your leads, picks the ones worth calling, and emails them back before your competitor does.
 
 ![Workflow canvas](docs/canvas.png)
 
-## The problem
-You get leads from your website, forms, or ads. Then:
-- Someone replies 2 days late, and the lead has already gone elsewhere.
-- The same person shows up 3 times in your CRM.
-- Your sales team can't tell which leads are worth a call, so everyone gets the same slow treatment.
-- Leads with missing or fake details waste your time.
+## Sound familiar?
+- Leads wait hours (or days) for a reply, and go elsewhere.
+- Same person appears 3 times in your CRM.
+- Your team doesn't know who to call first.
 
-## What this system does
-Every new lead is handled in about a minute, with no manual work:
-
-1. **Captures** the lead from any form or website (webhook).
-2. **Checks quality**: missing name, email, budget, or requirement, or a badly formatted email, stops here and goes to a manual-review email. No junk in your CRM.
-3. **Catches duplicates**: if the email already exists, the record is updated. No second contact, no second email.
-4. **Scores the lead with AI** (0-100) and labels it **Hot / Warm / Cold**, with a one-line reason your team can read.
-5. **Saves everything to HubSpot**: details, score, category, reason.
-6. **Writes and sends a personalized email** using the lead's name, company, and actual requirement.
-7. **Alerts your sales team** with a different message for Hot, Warm, and Cold leads.
-
-**Result:** your team starts the day knowing exactly who to call first and why.
-
-## Built to be trusted, not just to run
-Most automations break on messy real-world input. This one was tested against it:
-
-| Scenario | What happens |
+## What changes
+| Before | After |
 |---|---|
-| Brand-new lead | Full flow: CRM, email, alert |
-| Same email submitted twice | One contact, one email |
-| Missing email / budget / requirement | Stopped before the AI. Review email sent |
-| Invalid email (`name@abc`) | Blocked by format check |
-| AI returns a bad result (score 150, category "Very Hot") | Rejected. Sent to manual review |
-| Requirement written in Hinglish | Scored correctly |
-| Gibberish requirement | Not treated as high intent |
-| Very high budget | Valid score, correct routing |
+| Manual reply, whenever someone has time | Personalized email sent in about a minute |
+| Every lead looks the same | Each lead scored Hot / Warm / Cold, with a one-line reason |
+| Duplicates and junk in the CRM | Clean CRM: duplicates updated, fake or incomplete leads held for review |
+| Sales team guesses | Instant alert on the leads that matter |
 
-The AI output is **validated, not blindly trusted**. A model mistake never reaches your CRM or your customer.
+## How it works
+**Lead comes in** -> **checked for quality** -> **AI scores it** -> **saved to your CRM** -> **personalized email sent** -> **your team alerted**
 
-## Real bugs found and fixed during testing
-- An empty budget silently became `0` and passed validation. Fixed.
-- An invalid email reached the CRM and caused an error. Fixed with a pre-check.
-- Names were duplicated ("Rahul Sharma Sharma"). Fixed with first/last name splitting.
+Works with your existing form, CRM (HubSpot, Zoho, Sheets) and Gmail.
 
-## Tech stack
-n8n (workflow engine) | HubSpot CRM | Google Gemini | Gmail | Webhooks
+## Why you can trust it
+The AI's answer is checked before anything is saved or sent. Bad data and duplicates are caught automatically, and I tested it against messy real-world inputs before showing it to you.
 
-Works with your existing tools. Google Sheets, Zoho, or another CRM can replace parts of the stack.
+## Start with a pilot
+1. **Free 20-minute call**: tell me how you handle leads today.
+2. **I build it for one lead source** and you watch it work on real leads.
+3. **Keep it** if it helps. Expand if you want more.
 
-## What you get when we work together
-- The workflow set up on **your** forms, your CRM, and your email
-- AI scoring prompts tuned to **your** definition of a good lead
-- Email tone matched to your brand
-- Hosted setup, so it runs 24/7 without my laptop
-- A short walkthrough so your team knows how to use it
-- Support after launch (workflows need maintenance when tools change)
+Hosting, setup, a walkthrough for your team, and support after launch are all included.
 
-## How we start (low risk)
-1. **Free 20-minute call**: you describe how leads are handled today.
-2. **Pilot**: I build it for one lead source. You see it working on real leads.
-3. **Roll out** to more sources if it's useful.
+## Let's talk
+**Prakhar** | Workflow automation + data analytics
 
-> Pricing: *[add your pilot price / setup fee here]*
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/prakhardotdev)
+[![GitHub](https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/prakhardotdev)
+[![Email](https://img.shields.io/badge/Email-EA4335?style=for-the-badge&logo=gmail&logoColor=white)](mailto:prakharsinghvip@gmail.com)
 
-## Honest notes
-- This repo is a working demo. The production version runs on hosted infrastructure with a paid AI key, so there are no free-tier limits.
-- In this demo, outgoing emails go to a test address. For live use they go to the lead, optionally after your approval.
-
-## Contact
-**Prakhar** | Data analytics + workflow automation
-GitHub: github.com/prakhardotdev
-LinkedIn: linkedin.com/in/prakhardotdev
-Email: *[your business email]*
+<sub>Demo built with n8n, HubSpot, Google Gemini and Gmail.</sub>
