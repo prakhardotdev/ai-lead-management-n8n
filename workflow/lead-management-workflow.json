@@ -1,0 +1,927 @@
+{
+  "name": "AI-Powered Lead Management System",
+  "nodes": [
+    {
+      "parameters": {
+        "sendTo": "your-email@example.com",
+        "subject": "🔥 Hot Lead — Immediate Follow-up",
+        "emailType": "text",
+        "message": "=New Hot Lead  Name: {{ $('Clean Lead Data').item.json.name }} Company: {{ $('Clean Lead Data').item.json.company }} Email: {{ $('Clean Lead Data').item.json.email }} Budget: ₹{{ $('Clean Lead Data').item.json.budget }}  Lead Score: {{ $('AI Qualify Lead').item.json.output.lead_score }} Category: {{ $('AI Qualify Lead').item.json.output.category }}  Requirement: {{ $('Clean Lead Data').item.json.requirement }}  AI Reason: {{ $('AI Qualify Lead').item.json.output.reason }}  Please follow up immediately.",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [2976, -160],
+      "id": "f90fd33f-bb4d-4a67-91c3-73bf4c2a612d",
+      "name": "Hot Lead Alert",
+      "webhookId": "5eb18f2a-5c2a-4f70-87e9-bc73ca991053",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "YOUR_GMAIL_CREDENTIAL_ID",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "your-email@example.com",
+        "subject": "🟡 Warm Lead — Follow-up",
+        "emailType": "text",
+        "message": "=New Warm Lead  Name: {{ $('Clean Lead Data').item.json.name }} Company: {{ $('Clean Lead Data').item.json.company }} Email: {{ $('Clean Lead Data').item.json.email }} Budget: ₹{{ $('Clean Lead Data').item.json.budget }}  Lead Score: {{ $('AI Qualify Lead').item.json.output.lead_score }} Category: {{ $('AI Qualify Lead').item.json.output.category }}  Requirement: {{ $('Clean Lead Data').item.json.requirement }}  AI Reason: {{ $('AI Qualify Lead').item.json.output.reason }} Please follow up within 2 days.",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [2992, 272],
+      "id": "cc06eba2-b5ad-4332-87bb-71ed41a2f9ce",
+      "name": "Warm Lead Alert",
+      "webhookId": "5eb18f2a-5c2a-4f70-87e9-bc73ca991053",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "YOUR_GMAIL_CREDENTIAL_ID",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "your-email@example.com",
+        "subject": "🔵 Cold Lead — Nurture",
+        "emailType": "text",
+        "message": "=New Cold Lead  Name: {{ $('Clean Lead Data').item.json.name }} Company: {{ $('Clean Lead Data').item.json.company }} Email: {{ $('Clean Lead Data').item.json.email }} Budget: ₹{{ $('Clean Lead Data').item.json.budget }}  Lead Score: {{ $('AI Qualify Lead').item.json.output.lead_score }} Category: {{ $('AI Qualify Lead').item.json.output.category }}  Requirement: {{ $('Clean Lead Data').item.json.requirement }}  AI Reason: {{ $('AI Qualify Lead').item.json.output.reason }}  Add this lead to the nurture list.",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [2992, 48],
+      "id": "0168a923-695a-40aa-bdca-43a8a7e29b4e",
+      "name": "Cold Lead Alert",
+      "webhookId": "5eb18f2a-5c2a-4f70-87e9-bc73ca991053",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "YOUR_GMAIL_CREDENTIAL_ID",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "999eb498-ec3f-4855-96ca-22e08aca4e52",
+              "leftValue": "={{ $json.id }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "empty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [832, -64],
+      "id": "6cb4b526-f06d-4659-951c-7c90153eb437",
+      "name": "Is New Lead?"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "ai-lead-management",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [-96, -48],
+      "id": "4fec30f0-e388-4077-8d77-1e483eb125ad",
+      "name": "Receive Lead (Webhook)",
+      "webhookId": "9fce49fc-726d-43a4-b28f-70e75e5201ae"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "4ed35c54-2fbc-4629-abdf-47a924ce21f8",
+              "name": "name",
+              "value": "={{ $json.body.name }}",
+              "type": "string"
+            },
+            {
+              "id": "22e0aa9d-9f20-42c0-ba38-b89a707105ab",
+              "name": "email",
+              "value": "={{ $json.body.email }}",
+              "type": "string"
+            },
+            {
+              "id": "22613025-035e-479f-8e92-4e83b3738681",
+              "name": "company",
+              "value": "={{ $json.body.company }}",
+              "type": "string"
+            },
+            {
+              "id": "8fc95ede-42e5-442f-bd24-6ff1a40e4bd2",
+              "name": "phone",
+              "value": "={{ $json.body.phone }}",
+              "type": "string"
+            },
+            {
+              "id": "9b3d04a0-302d-4dd0-a89d-95711a7a9952",
+              "name": "industry",
+              "value": "={{ $json.body.industry }}",
+              "type": "string"
+            },
+            {
+              "id": "eaa2dce5-0f28-4d84-a112-f233ef9eb0ed",
+              "name": "budget",
+              "value": "={{ $json.body.budget }}",
+              "type": "number"
+            },
+            {
+              "id": "7292117c-a880-40a9-a0f0-839696debac2",
+              "name": "requirement",
+              "value": "={{ $json.body.requirement }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [160, -48],
+      "id": "69405ae3-0754-4a6e-8a4d-dded6a784986",
+      "name": "Clean Lead Data"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "3fa85e24-8291-461d-9b7b-ee34f4d7f246",
+              "leftValue": "={{ $json.name }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "2df474f0-d2e8-45a8-bad5-dd9201c533d4",
+              "leftValue": "={{ $json.company }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "707d105f-6532-4bb4-bc9b-6ec2c58a2d06",
+              "leftValue": "={{ $json.email }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "33ea5fac-8e43-42fe-9a4e-00eb5e0fdfdd",
+              "leftValue": "={{ $json.budget }}",
+              "rightValue": 0,
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              }
+            },
+            {
+              "id": "a5677c05-bde7-4854-8c3f-02f6e8c8aae7",
+              "leftValue": "={{ $json.requirement }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "d34d9c06-4bb4-469f-8ff3-6f3a1d58ce53",
+              "leftValue": "={{ $json.email }}",
+              "rightValue": "^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$",
+              "operator": {
+                "type": "string",
+                "operation": "regex"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [368, -48],
+      "id": "a7c6aba5-bb65-4225-9c0e-113f0d2f623c",
+      "name": "Validate Input"
+    },
+    {
+      "parameters": {
+        "authentication": "appToken",
+        "operation": "search",
+        "limit": 1,
+        "filterGroupsUi": {
+          "filterGroupsValues": [
+            {
+              "filtersUi": {
+                "filterValues": [
+                  {
+                    "propertyName": "email|string",
+                    "value": "={{ $('Clean Lead Data').item.json.email }}"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.hubspot",
+      "typeVersion": 2.2,
+      "position": [624, -64],
+      "id": "318de0c2-ab20-4cdb-ad61-3b7c1f73749d",
+      "name": "Search HubSpot by Email",
+      "alwaysOutputData": true,
+      "credentials": {
+        "hubspotAppToken": {
+          "id": "YOUR_HUBSPOT_CREDENTIAL_ID",
+          "name": "HubSpot Service Key account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=You are a sales lead qualification assistant.\n\nAnalyze the lead information and qualify the lead.\n\nReturn exactly these fields:\n\nlead_score\ncategory\nreason\n\nRules:\n- lead_score must be an integer from 0 to 100.\n- category must be exactly one of: Hot, Warm, Cold.\n- reason must be one sentence.\n- Use only the information provided.\n- Do not invent information.\n- Do not add extra fields.\n\nEvaluate the lead using:\n1. Budget\n2. Business requirement\n3. Potential business value\n4. Clarity of requirement\n\nLead Information:\n\nName: {{ $('Clean Lead Data').item.json.name }}\nEmail: {{ $('Clean Lead Data').item.json.email }}\nCompany: {{ $('Clean Lead Data').item.json.company }}\nIndustry: {{ $('Clean Lead Data').item.json.industry }}\nBudget: {{ $('Clean Lead Data').item.json.budget }}\nRequirement: {{ $('Clean Lead Data').item.json.requirement }}",
+        "hasOutputParser": true,
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.9,
+      "position": [1136, -80],
+      "id": "4916b744-c3cf-4b13-9fe6-15ab9d0f50d0",
+      "name": "AI Qualify Lead",
+      "executeOnce": false
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "ec5a23f3-0fb3-4922-9640-dadbec4ced1a",
+              "leftValue": "={{ $json.output.lead_score }}",
+              "rightValue": 0,
+              "operator": {
+                "type": "number",
+                "operation": "gte"
+              }
+            },
+            {
+              "id": "067e3b7e-6fec-4fa7-99df-73cbb7381355",
+              "leftValue": "={{ $json.output.lead_score }}",
+              "rightValue": 100,
+              "operator": {
+                "type": "number",
+                "operation": "lte"
+              }
+            },
+            {
+              "id": "d968c7c1-9cb9-4697-9265-938a7002983f",
+              "leftValue": "={{ ['Hot','Warm','Cold'].includes($json.output.category) }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "e7347548-45de-4b4c-8b90-bf598a5c784a",
+              "leftValue": "={{ $json.output.reason }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [1472, -80],
+      "id": "6d5e1e5a-0677-4068-9cac-25a2eb97ea3e",
+      "name": "Validate AI Output"
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n  \"lead_score\": 85,\n  \"category\": \"Hot\",\n  \"reason\": \"The lead has a strong budget and a clear business requirement.\"\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [1312, 128],
+      "id": "c7821846-4217-4900-892a-22a093cb2b14",
+      "name": "Structured Output"
+    },
+    {
+      "parameters": {
+        "sendTo": "your-email@example.com",
+        "subject": "⚠️ AI output invalid — review",
+        "emailType": "text",
+        "message": "AI returned an invalid result for this lead. Please review manually.",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [1760, 160],
+      "id": "0b9805d3-46de-457a-8f96-d3c7743eb204",
+      "name": "Review: Invalid AI Output",
+      "webhookId": "580822b7-5818-459f-8550-c305e3fc7d77",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "YOUR_GMAIL_CREDENTIAL_ID",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "appToken",
+        "email": "={{ $('Clean Lead Data').item.json.email }}",
+        "additionalFields": {
+          "companyName": "={{ $('Clean Lead Data').item.json.company }}",
+          "customPropertiesUi": {
+            "customPropertiesValues": [
+              {
+                "property": "budget",
+                "value": "={{ $('Clean Lead Data').item.json.budget }}"
+              },
+              {
+                "property": "lead_industry",
+                "value": "={{ $('Clean Lead Data').item.json.industry }}"
+              },
+              {
+                "property": "lead_score",
+                "value": "={{ $json.output.lead_score }}"
+              },
+              {
+                "property": "lead_source",
+                "value": "Website"
+              },
+              {
+                "property": "lead_category",
+                "value": "={{ $json.output.category }}"
+              },
+              {
+                "property": "ai_qualification_reason",
+                "value": "={{ $json.output.reason }}"
+              }
+            ]
+          },
+          "firstName": "={{ $('Clean Lead Data').item.json.name.split(' ')[0] }}",
+          "lastName": "={{ $('Clean Lead Data').item.json.name.split(' ').slice(1).join(' ') }}",
+          "phoneNumber": "={{ $('Clean Lead Data').item.json.phone }}"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.hubspot",
+      "typeVersion": 2.2,
+      "position": [1744, -96],
+      "id": "9fa22f5c-fad8-4f67-8f6d-17ad84d69576",
+      "name": "Save Lead to HubSpot",
+      "credentials": {
+        "hubspotAppToken": {
+          "id": "YOUR_HUBSPOT_CREDENTIAL_ID",
+          "name": "HubSpot Service Key account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=You are a professional B2B sales email writer.\n\nWrite a personalized outreach email for the lead using ONLY the information provided.\n\nLead information:\n\nName: {{ $('Clean Lead Data').item.json.name }}\nCompany: {{ $('Clean Lead Data').item.json.company }}\nIndustry: {{ $('Clean Lead Data').item.json.industry }}\nBudget: {{ $('Clean Lead Data').item.json.budget }}\nRequirement: {{ $('Clean Lead Data').item.json.requirement }}\n\nRules:\n\n- Address the lead by their first name.\n- Mention their company naturally.\n- Mention their specific requirement.\n- Explain briefly how our service could help.\n- Keep the tone professional, helpful and human.\n- Do not sound like spam.\n- Do not make claims that are not supported by the provided information.\n- Do not mention specific days, dates or times.\n- Strictly stay under 100 words.\n- Include one clear but non-pushy CTA.\n- Do not include a subject line.\n- Return only the email body.\n- Sign off as Prakhar.",
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.9,
+      "position": [1952, -96],
+      "id": "b844db09-a89f-4507-9dcd-766728e02a7b",
+      "name": "AI Write Email"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-3.5-flash-lite",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1.1,
+      "position": [1984, 160],
+      "id": "76abf2b4-b89e-4158-a489-8bfcd72cf62f",
+      "name": "Gemini (Email)",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "YOUR_GEMINI_CREDENTIAL_ID",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "your-email@example.com",
+        "subject": "=Regarding your {{ $('Clean Lead Data').item.json.requirement }}",
+        "emailType": "text",
+        "message": "={{ $json.text }}",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [2256, -96],
+      "id": "3e69d0b9-b735-4f21-836d-fc72c1955ed0",
+      "name": "Send Email to Lead",
+      "webhookId": "227d2b57-b273-4c32-868a-ad3cb0a675a7",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "YOUR_GMAIL_CREDENTIAL_ID",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $('AI Qualify Lead').item.json.output.category }}",
+                    "rightValue": "Hot",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "9c14413c-a743-4765-8879-344011c86861"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Hot"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "e1898fff-9dfa-43a4-9466-1f9b3a33475e",
+                    "leftValue": "={{ $('AI Qualify Lead').item.json.output.category }}",
+                    "rightValue": "Cold",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Cold"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "17d6bd9e-fd68-4dac-991b-c6fe340a5176",
+                    "leftValue": "={{ $('AI Qualify Lead').item.json.output.category }}",
+                    "rightValue": "Warm",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Warm"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [2560, 48],
+      "id": "3941b70d-7696-4a84-9fae-9c37793458ab",
+      "name": "Route by Category"
+    },
+    {
+      "parameters": {
+        "authentication": "appToken",
+        "email": "={{ $('Clean Lead Data').item.json.email }}",
+        "additionalFields": {
+          "companyName": "={{ $('Clean Lead Data').item.json.company }}",
+          "customPropertiesUi": {
+            "customPropertiesValues": [
+              {
+                "property": "budget",
+                "value": "={{ $('Clean Lead Data').item.json.budget }}"
+              },
+              {
+                "property": "lead_industry",
+                "value": "={{ $('Clean Lead Data').item.json.industry }}"
+              }
+            ]
+          },
+          "phoneNumber": "={{ $('Clean Lead Data').item.json.phone }}"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.hubspot",
+      "typeVersion": 2.2,
+      "position": [800, 256],
+      "id": "71e3d824-e339-4b65-bfcd-1dbd06d94ab1",
+      "name": "Update Existing Lead (No Email)",
+      "credentials": {
+        "hubspotAppToken": {
+          "id": "YOUR_HUBSPOT_CREDENTIAL_ID",
+          "name": "HubSpot Service Key account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-3.5-flash-lite",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1.1,
+      "position": [1136, 128],
+      "id": "94ac65de-0c32-40ad-987e-a2a8729eb5e8",
+      "name": "Gemini (Qualify)",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "YOUR_GEMINI_CREDENTIAL_ID",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "your-email@example.com",
+        "subject": "⚠️ Lead needs manual review",
+        "emailType": "text",
+        "message": "Lead cannot be processed because required information is missing.",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [304, 272],
+      "id": "bd723bf9-ed75-4a0d-83c0-ec2aba01e173",
+      "name": "Review: Missing Info",
+      "webhookId": "b739ca81-88aa-4cf5-aa4f-3d069183af86",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "YOUR_GMAIL_CREDENTIAL_ID",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "INPUT & VALIDATION\n",
+        "height": 704,
+        "width": 704,
+        "color": "#02181D"
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [-176, -224],
+      "id": "b5fbe8e1-0dd1-4bd7-8578-28774ba3d6bf",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "DUPLICATE CHECK\n",
+        "height": 704,
+        "width": 464,
+        "color": "#02181D"
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [560, -224],
+      "id": "df3ad510-cbcc-42b4-861d-a1c609233ebf",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "AI QUALIFICATION",
+        "height": 704,
+        "width": 528,
+        "color": "#02181D"
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [1072, -224],
+      "id": "3395931e-b900-4fcb-8e74-eb924ca90111",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "CRM + EMAIL\n",
+        "height": 704,
+        "width": 768,
+        "color": "#02181D"
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [1664, -224],
+      "id": "599c0200-4d99-457d-b136-612a98385f75",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "content": "ROUTING\n",
+        "height": 720,
+        "width": 736,
+        "color": "#02181D"
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [2464, -240],
+      "id": "af66f573-f466-47f9-b5d1-9c70be2b8270",
+      "name": "Sticky Note4"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Is New Lead?": {
+      "main": [
+        [
+          {
+            "node": "AI Qualify Lead",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Update Existing Lead (No Email)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Receive Lead (Webhook)": {
+      "main": [
+        [
+          {
+            "node": "Clean Lead Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Clean Lead Data": {
+      "main": [
+        [
+          {
+            "node": "Validate Input",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validate Input": {
+      "main": [
+        [
+          {
+            "node": "Search HubSpot by Email",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Review: Missing Info",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Search HubSpot by Email": {
+      "main": [
+        [
+          {
+            "node": "Is New Lead?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Qualify Lead": {
+      "main": [
+        [
+          {
+            "node": "Validate AI Output",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validate AI Output": {
+      "main": [
+        [
+          {
+            "node": "Save Lead to HubSpot",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Review: Invalid AI Output",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Qualify Lead",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Save Lead to HubSpot": {
+      "main": [
+        [
+          {
+            "node": "AI Write Email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Write Email": {
+      "main": [
+        [
+          {
+            "node": "Send Email to Lead",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gemini (Email)": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Write Email",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send Email to Lead": {
+      "main": [
+        [
+          {
+            "node": "Route by Category",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Route by Category": {
+      "main": [
+        [
+          {
+            "node": "Hot Lead Alert",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Cold Lead Alert",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Warm Lead Alert",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gemini (Qualify)": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Qualify Lead",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "43cf6b43-c5ca-4f03-be19-fb27f05f8846",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "1964ca94351df139d5366f2bd0ab3a3620e5f180d45ea76953bb61cc91e73b98"
+  },
+  "nodeGroups": [],
+  "id": "CQ3zuKNdaoKi0tqF",
+  "tags": []
+}
